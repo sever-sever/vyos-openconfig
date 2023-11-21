@@ -1,4 +1,6 @@
 
+LABEL maintainer = "Viachelav Hletenko"
+
 FROM alpine
 
 # Add dependecies
