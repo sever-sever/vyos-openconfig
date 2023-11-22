@@ -1,10 +1,8 @@
 
-LABEL maintainer = "Viachelav Hletenko"
-
 FROM alpine
 
 # Add dependecies
-RUN apk add --update python3 py3-pip \
+RUN apk add --update python3 py3-pip nano \
     && pip3 install pyang==2.6.0 pyangbind==0.8.4.post1 \
     && rm -rf /var/cache/apk/*
 
@@ -26,6 +24,17 @@ RUN cp public/release/models/*.yang yang_modules/. \
 # Opened an issue https://github.com/openconfig/public/issues/1006
 
 WORKDIR /opt/openconfig/yang_modules
-RUN pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o oc_bgp.py openconfig-bgp.yang \
-    && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o oc_system.py openconfig-system.yang
+RUN pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_bgp.py openconfig-bgp.yang \
+  && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_system.py openconfig-system.yang \
+  && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_network_instance.py openconfig-network-instance.yang \
+  && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_interfaces.py openconfig-interfaces.yang \
+  && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_local_routing.py openconfig-local-routing.yang
 
+# Copy and bindings from YANG
+# COPY scripts/generate_yang_bindings.sh .
+# RUN chmod +x /opt/openconfig/yang_modules/generate_yang_bindings.sh \
+#    && /opt/openconfig/yang_modules/generate_yang_bindings.sh
+
+WORKDIR /opt/openconfig
+
+LABEL maintainer="Viachelav Hletenko"
