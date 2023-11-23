@@ -1,0 +1,39 @@
+// File: vyos.proto
+
+syntax = "proto3";
+
+// VyosConfigService
+service VyosConfigService {
+  // Set VyOS configuration
+  rpc SetConfig (SetConfigRequest) returns (SetConfigReply);
+
+  // Get VyOS configuration
+  rpc GetConfig (GetConfigRequest) returns (GetConfigReply);
+
+  // Get RX packets Counter
+  rpc GetCounters (RxpacketRequest) returns (RxpacketReply);
+}
+
+message SetConfigRequest {
+  string config = 1;
+}
+
+message SetConfigReply {
+  string message = 2;
+}
+
+message GetConfigRequest {}
+
+message GetConfigReply {
+  string config = 1;
+}
+
+// GetCounters gets interface counters
+message RxpacketRequest {
+  string interface = 1;
+}
+
+message RxpacketReply {
+  uint64 rxpackets = 1;
+  string message = 2;
+}

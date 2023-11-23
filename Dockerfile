@@ -19,10 +19,7 @@ RUN cp public/release/models/*.yang yang_modules/. \
     && cp -R public/release/models/*/*.yang yang_modules/. \
     && cp public/third_party/ietf/*.yang yang_modules/.
 
-# Needs bgp replace to this, otherwise pyang cannot generate pybind bgp
-# https://raw.githubusercontent.com/nanog75/code-samples/a64e8ab62844abc2b32f1a168ebbba31b35ad43d/ztp/yang/openconfig-bgp.yang
-# Opened an issue https://github.com/openconfig/public/issues/1006
-
+# Generate bindings from YANG
 WORKDIR /opt/openconfig/yang_modules
 RUN pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_bgp.py openconfig-bgp.yang \
   && pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --format pybind -o ../oc_system.py openconfig-system.yang \
@@ -36,5 +33,9 @@ RUN pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --form
 #    && /opt/openconfig/yang_modules/generate_yang_bindings.sh
 
 WORKDIR /opt/openconfig
+
+# gRPC
+RUN pip3 install grpcio==1.59.3 grpcio-tools
+RUN mkdir -p /opt/openconfig/grpc
 
 LABEL maintainer="Viachelav Hletenko"

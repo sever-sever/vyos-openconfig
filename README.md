@@ -5,6 +5,7 @@ sudo podman build --net host --tag openconfig:one -f ./Dockerfile
 
 generate container image openconfig:one path /home/vyos/
 ```
+Container generates python3 classes from the YAML files
 
 Show tree
 ```shell
