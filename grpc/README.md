@@ -2,7 +2,7 @@
 
 Required packages `grpcio` and `grpcio-tools`
 ```shell
-pip3 install grpcio==1.59.3 grpcio-tools
+pip3 install grpcio==1.59.3 grpcio-tools==1.59.3
 ```
 
 Generate protos

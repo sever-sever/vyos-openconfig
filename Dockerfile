@@ -6,7 +6,8 @@ RUN apk add --update python3 py3-pip nano \
     && pip3 install pyang==2.6.0 pyangbind==0.8.4.post1 \
     && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /opt/openconfig/yang_modules
+RUN mkdir -p /opt/openconfig/yang_modules \
+    && mkdir -p /opt/grpc
 WORKDIR /opt/openconfig
 
 # Download and extract openconfig YANG modules
@@ -32,10 +33,20 @@ RUN pyang --plugindir /usr/lib/python3.11/site-packages/pyangbind/plugin/ --form
 # RUN chmod +x /opt/openconfig/yang_modules/generate_yang_bindings.sh \
 #    && /opt/openconfig/yang_modules/generate_yang_bindings.sh
 
-WORKDIR /opt/openconfig
-
 # gRPC
-RUN pip3 install grpcio==1.59.3 grpcio-tools
-RUN mkdir -p /opt/openconfig/grpc
+WORKDIR /opt/grpc
+RUN pip3 install grpcio==1.59.3 grpcio-tools==1.59.3 \
+    && wget https://github.com/sever-sever/vyos-openconfig/archive/refs/heads/main.zip -O /opt/grpc/main.zip \
+    && unzip main.zip \
+    && rm main.zip \
+    && mv /opt/grpc/vyos-openconfig-main/grpc/* /opt/grpc/ \
+    && rm -rf /opt/grpc/vyos-openconfig-main
+
+# OpenSSL certs
+RUN apk add --update openssl \
+    && rm -rf /var/cache/apk/* \
+    && mkdir -p /opt/certificates \
+    && openssl genpkey -algorithm RSA -out /opt/certificates/server.key \
+    && openssl req -new -x509 -key /opt/certificates/server.key -out /opt/certificates/server.crt -days 3650 -subj "/CN=openconfig.vyos.local"
 
 LABEL maintainer="Viachelav Hletenko"

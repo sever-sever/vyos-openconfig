@@ -31,5 +31,6 @@ oc_interfaces.interfaces.interface.add('eth0')
 
 tmp = oc_interfaces.get()
 
+# RFC7951-formatted JSON
 print(pybindJSON.dumps(tmp, mode="ietf"))
 print(pybindIETFXMLEncoder.serialise(oc_network_instance))

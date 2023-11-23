@@ -4,10 +4,11 @@
 Script: node_grpc_server.py
 Author: Viacheslav Hletenko
 Date: 2023
-Descritpion: gRPC server
+Descritpion: gRPC server script
 """
 
 import json
+import time
 from concurrent import futures
 
 import grpc
@@ -43,6 +44,14 @@ class VyosConfigServiceServicer(vyos_pb2_grpc.VyosConfigServiceServicer):
         rx_packets = get_rx_packets(request.interface)
         return vyos_pb2.RxpacketReply(
             message=f'Rx packets for {request.interface}: {rx_packets}')
+
+    def GetCountersStream(self, request, context):
+        """Get interface RX counters stream"""
+        while True:
+            rx_packets = get_rx_packets(request.interface)
+            yield vyos_pb2.RxpacketReply(
+                message=f'Rx packets for {request.interface}: {rx_packets}')
+            time.sleep(1)
 
 
 def serve():

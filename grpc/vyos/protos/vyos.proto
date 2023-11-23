@@ -5,13 +5,16 @@ syntax = "proto3";
 // VyosConfigService
 service VyosConfigService {
   // Set VyOS configuration
-  rpc SetConfig (SetConfigRequest) returns (SetConfigReply);
+  rpc SetConfig (SetConfigRequest) returns (SetConfigReply) {}
 
   // Get VyOS configuration
-  rpc GetConfig (GetConfigRequest) returns (GetConfigReply);
+  rpc GetConfig (GetConfigRequest) returns (GetConfigReply) {}
 
   // Get RX packets Counter
-  rpc GetCounters (RxpacketRequest) returns (RxpacketReply);
+  rpc GetCounters (RxpacketRequest) returns (RxpacketReply) {}
+
+    // Get RX packets Counter stream
+  rpc GetCountersStream (RxpacketRequest) returns (stream RxpacketReply) {}
 }
 
 message SetConfigRequest {

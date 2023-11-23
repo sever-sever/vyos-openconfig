@@ -18,6 +18,7 @@ from vyos.protos import (
 
 def main():
     # Create gRPC channel
+    # channel = grpc.insecure_channel('localhost:50051')
     channel = grpc.insecure_channel('localhost:50051')
     stub = vyos_pb2_grpc.VyosConfigServiceStub(channel)
 
@@ -31,9 +32,14 @@ def main():
     print('GetConfig response:', response.config)
 
     # Get interface RX counters
-    response = stub.GetCounters(vyos_pb2.RxpacketRequest(interface='enp8s0'))
+    response = stub.GetCounters(vyos_pb2.RxpacketRequest(interface='eth0'))
     print(f'GetCounters: {response}')
-    # print('GetCounter response:', response.rxpackets)
+
+    # Get interface RX counters stream
+    response = stub.GetCountersStream(
+        vyos_pb2.RxpacketRequest(interface='eth0'))
+    for r in response:
+        print(f'GetCountersStream: {r}')
 
 
 if __name__ == '__main__':
