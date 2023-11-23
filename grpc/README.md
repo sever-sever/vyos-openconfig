@@ -23,3 +23,6 @@ GetConfig response: Sample VyOS configuration
 GetCounters: message: "Rx packets for enp8s0: 732634"
 
 ```
+
+Additional links
+[proto3](https://protobuf.dev/programming-guides/proto3/) and [quickstart](https://grpc.io/docs/languages/python/quickstart/)
