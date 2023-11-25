@@ -9,7 +9,10 @@ Container generates python3 classes from the YAML files
 
 Show tree
 ```shell
-/opt/openconfig/yang_modules # pyang -f tree openconfig-interfaces.yang 
+/opt/openconfig/yang_modules # pyang openconfig-interfaces.yang -f tree --tree-depth=4
+/opt/openconfig/yang_modules # pyang openconfig-interfaces.yang -f tree --tree-path=/interfaces/interface/state
+/opt/openconfig/yang_modules # pyang openconfig-interfaces.yang -f tree
+
 module: openconfig-interfaces
   +--rw interfaces
      +--rw interface* [name]
